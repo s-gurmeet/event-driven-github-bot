@@ -227,6 +227,105 @@ router.get('/events/:eventId/actions', async (req, res) => {
   }
 });
 
+/**
+ * Simulate an incoming webhook event (for testing & interactive demo).
+ */
+router.post('/events/simulate', async (req, res) => {
+  const { eventType = 'issues', title = 'Bug: user cannot save settings', body = 'Clicking save throws error 500 in console.', repoId } = req.body;
+  const rules = require('../services/rules');
+
+  try {
+    let repo;
+    if (repoId) {
+      const r = await db.query('SELECT * FROM repositories WHERE id = $1 AND user_id = $2', [repoId, req.session.userId]);
+      repo = r.rows[0];
+    } else {
+      const r = await db.query('SELECT * FROM repositories WHERE user_id = $1 AND active = true LIMIT 1', [req.session.userId]);
+      repo = r.rows[0];
+    }
+
+    if (!repo) {
+      return res.status(400).json({ error: 'No active repository found. Connect a repository first or use Demo mode.' });
+    }
+
+    const deliveryId = crypto.randomUUID();
+    let action = 'opened';
+    let payload = {};
+
+    if (eventType === 'issues') {
+      payload = {
+        action: 'opened',
+        issue: {
+          number: Math.floor(Math.random() * 900) + 100,
+          title,
+          body,
+          html_url: `https://github.com/${repo.full_name}/issues/101`,
+          user: { login: req.session.userLogin || 'developer' },
+          labels: []
+        },
+        repository: { full_name: repo.full_name }
+      };
+    } else if (eventType === 'pull_request') {
+      payload = {
+        action: 'opened',
+        pull_request: {
+          number: Math.floor(Math.random() * 900) + 100,
+          title,
+          body,
+          html_url: `https://github.com/${repo.full_name}/pull/102`,
+          user: { login: req.session.userLogin || 'developer' },
+          head: { ref: 'feature-patch' },
+          base: { ref: 'main' }
+        },
+        repository: { full_name: repo.full_name }
+      };
+    } else {
+      action = 'push';
+      payload = {
+        ref: 'refs/heads/main',
+        pusher: { name: req.session.userLogin || 'developer' },
+        commits: [
+          {
+            id: crypto.randomBytes(8).toString('hex'),
+            message: title,
+            url: `https://github.com/${repo.full_name}/commit/abc123`
+          }
+        ],
+        repository: { full_name: repo.full_name }
+      };
+    }
+
+    const eventResult = await db.query(
+      `INSERT INTO events (repo_id, delivery_id, event_type, action, payload, processed)
+       VALUES ($1, $2, $3, $4, $5, false)
+       RETURNING *`,
+      [repo.id, deliveryId, eventType, action, JSON.stringify(payload)]
+    );
+    const event = eventResult.rows[0];
+
+    // Process through rules engine
+    await rules.processRules(event, repo);
+
+    // Fetch resulting actions
+    const actions = await db.query('SELECT * FROM bot_actions WHERE event_id = $1', [event.id]);
+
+    res.json({
+      success: true,
+      event: {
+        id: event.id,
+        eventType,
+        action,
+        deliveryId,
+        repo: repo.full_name
+      },
+      actions: actions.rows
+    });
+  } catch (err) {
+    console.error('[API] Simulate event error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─── Rules ───────────────────────────────────────────────────────────────────
 
 /**

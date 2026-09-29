@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GitBot — Intelligent GitHub Automation</title>
-  <meta name="description" content="Event-driven GitHub automation bot with AI-powered triage, configurable rules, and Slack notifications. Connect your repos and automate your workflow." />
+  <title>GitBot — Autonomous Event-Driven GitHub Automation</title>
+  <meta name="description" content="Intelligent GitHub automation bot with AI triage, flexible rules engine, and Slack alerts. Connect your repos and automate workflows in seconds." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body class="landing-page">
-  <!-- Animated background grid -->
+  <!-- Ambient Lighting Effects -->
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
   <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- Announcement Bar -->
+  <div class="top-announcement">
+    <span class="top-announcement-badge">New</span>
+    <span>Autonomous GitHub Event Router with <strong>Google Gemini AI 1.5 Flash</strong></span>
+    <a href="/auth/demo" style="text-decoration: underline; margin-left: 8px; color: #38bdf8;">Try Live Demo →</a>
+  </div>
 
   <!-- Navigation -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
@@ -24,10 +31,12 @@
         <span class="logo-text">GitBot</span>
       </div>
       <div class="nav-links">
+        <a href="#pipeline" class="nav-link">Interactive Sandbox</a>
         <a href="#features" class="nav-link">Features</a>
-        <a href="#how-it-works" class="nav-link">How it works</a>
+        <a href="#how-it-works" class="nav-link">Architecture</a>
+        <a href="/auth/demo" class="btn btn-demo btn-sm">Instant Demo</a>
         <a href="/auth/github" class="btn btn-primary btn-sm" id="nav-signin-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
           Sign in with GitHub
         </a>
       </div>
@@ -39,151 +48,216 @@
     <div class="hero-inner">
       <div class="hero-badge">
         <span class="badge-dot" aria-hidden="true"></span>
-        AI-Powered Automation
+        Zero Latency • Event-Driven GitHub Automation
       </div>
       <h1 class="hero-title">
-        GitHub Automation<br />
-        <span class="gradient-text">on Autopilot</span>
+        Your GitHub Repository<br />
+        <span class="gradient-text">on Total Autopilot</span>
       </h1>
       <p class="hero-subtitle">
-        Connect your repos, define rules, and let the bot handle the repetitive work — labeling issues, 
-        posting comments, and sending Slack alerts — all powered by Gemini AI.
+        React in real-time to every issue, pull request, and commit. 
+        Apply intelligent labels, generate Gemini AI triage summaries, and broadcast high-priority alerts to Slack.
       </p>
       <div class="hero-actions">
         <a href="/auth/github" class="btn btn-primary btn-lg" id="hero-signin-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-          Get Started Free
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          Connect with GitHub
         </a>
-        <a href="#how-it-works" class="btn btn-ghost btn-lg">See how it works</a>
+        <a href="/auth/demo" class="btn btn-demo btn-lg">
+          ⚡ Explore Live Dashboard (Demo)
+        </a>
+        <a href="#pipeline" class="btn btn-ghost btn-lg">
+          Try Live Sandbox ↓
+        </a>
       </div>
 
-      <!-- Live demo terminal -->
-      <div class="terminal-card" aria-label="Demo of bot activity">
-        <div class="terminal-header">
-          <div class="terminal-dots">
-            <span class="dot dot-red" aria-hidden="true"></span>
-            <span class="dot dot-yellow" aria-hidden="true"></span>
-            <span class="dot dot-green" aria-hidden="true"></span>
+      <!-- Interactive Automation Pipeline Sandbox -->
+      <div class="pipeline-sandbox" id="pipeline" aria-label="Interactive Bot Simulation Sandbox">
+        <div class="sandbox-header">
+          <div class="sandbox-title-wrap">
+            <span style="font-size: 1.4rem;">🔬</span>
+            <div>
+              <div class="sandbox-title">Interactive Automation Pipeline</div>
+              <div class="sandbox-subtitle">Click an event to simulate live webhook ingestion, AI triage & dispatch</div>
+            </div>
           </div>
-          <span class="terminal-title">Bot Activity Log</span>
+          <div class="trigger-buttons-group">
+            <button class="btn btn-ghost btn-sm active" id="btn-sim-issue" onclick="simulateEvent('issue')">
+              🐛 Bug Issue
+            </button>
+            <button class="btn btn-ghost btn-sm" id="btn-sim-pr" onclick="simulateEvent('pr')">
+              🔀 Feature PR
+            </button>
+            <button class="btn btn-ghost btn-sm" id="btn-sim-push" onclick="simulateEvent('push')">
+              🚀 Git Push
+            </button>
+          </div>
         </div>
-        <div class="terminal-body" role="log" aria-live="polite" id="demo-log">
-          <div class="log-line"><span class="log-time">09:42:01</span><span class="log-event event-issue">ISSUE</span><span class="log-text">🐛 "Login button broken on mobile" opened by <code>alex_dev</code></span></div>
-          <div class="log-line"><span class="log-time">09:42:02</span><span class="log-event event-action">ACTION</span><span class="log-text">🤖 AI triaged → Priority: <span class="priority-high">HIGH</span>, Label: <code>bug</code></span></div>
-          <div class="log-line"><span class="log-time">09:42:03</span><span class="log-event event-action">ACTION</span><span class="log-text">🏷️ Added label <code>bug</code> to issue #42</span></div>
-          <div class="log-line"><span class="log-time">09:42:04</span><span class="log-event event-slack">SLACK</span><span class="log-text">📣 Sent notification to <code>#github-alerts</code></span></div>
-          <div class="log-line"><span class="log-time">09:43:17</span><span class="log-event event-pr">PR</span><span class="log-text">🔀 "Fix auth middleware" PR opened by <code>sarah_eng</code></span></div>
-          <div class="log-line"><span class="log-time">09:43:18</span><span class="log-event event-action">ACTION</span><span class="log-text">🤖 AI summarized → "Refactors JWT validation to fix edge case with refresh tokens"</span></div>
-          <div class="log-line log-blink"><span class="log-time">09:43:19</span><span class="log-event event-action">ACTION</span><span class="log-text">💬 Posted triage comment on PR #87 ▊</span></div>
+
+        <!-- Visual 4-Node Pipeline -->
+        <div class="pipeline-nodes-grid">
+          <div class="pipeline-node active" id="node-webhook">
+            <div class="node-step-tag">Step 01 • Ingest</div>
+            <div class="node-title"><span>⚡</span> Webhook Receiver</div>
+            <div class="node-detail" id="node-webhook-detail">HMAC Verified: 200 OK</div>
+          </div>
+          <div class="pipeline-node active" id="node-ai">
+            <div class="node-step-tag">Step 02 • AI Intel</div>
+            <div class="node-title"><span>🤖</span> Gemini AI 1.5</div>
+            <div class="node-detail" id="node-ai-detail">Priority: HIGH (Confidence: 98%)</div>
+          </div>
+          <div class="pipeline-node active" id="node-rules">
+            <div class="node-step-tag">Step 03 • Logic</div>
+            <div class="node-title"><span>📋</span> Rules Engine</div>
+            <div class="node-detail" id="node-rules-detail">Rule #1 Matched: 'Auto-Triage'</div>
+          </div>
+          <div class="pipeline-node active" id="node-dispatch">
+            <div class="node-step-tag">Step 04 • Dispatch</div>
+            <div class="node-title"><span>📣</span> Multi-Target</div>
+            <div class="node-detail" id="node-dispatch-detail">GitHub Label + Slack Alert</div>
+          </div>
+        </div>
+
+        <!-- Terminal Output -->
+        <div class="sandbox-terminal">
+          <div class="sandbox-terminal-head">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
+              event_pipeline_stream.log
+            </span>
+            <button class="btn-icon" style="padding: 2px 6px; font-size: 0.7rem;" onclick="copyDemoLogs()">Copy</button>
+          </div>
+          <div class="sandbox-terminal-body" id="sandbox-logs">
+            <!-- Populated dynamically via landing.js -->
+          </div>
         </div>
       </div>
     </div>
   </header>
 
+  <!-- Metrics Strip -->
+  <section class="metrics-strip">
+    <div class="metric-box">
+      <div class="metric-val">&lt; 140ms</div>
+      <div class="metric-lbl">P99 Dispatch Latency</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-val">100%</div>
+      <div class="metric-lbl">Idempotent Delivery</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-val">AES-256</div>
+      <div class="metric-lbl">Per-Repo Webhook Secrets</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-val">Gemini 1.5</div>
+      <div class="metric-lbl">Zero-Config AI Triage</div>
+    </div>
+  </section>
+
   <!-- Features Section -->
-  <section class="features" id="features" aria-labelledby="features-heading">
+  <section class="features" id="features">
     <div class="section-inner">
-      <div class="section-label">What GitBot does</div>
-      <h2 class="section-title" id="features-heading">Everything you need for GitHub automation</h2>
-      <p class="section-subtitle">From webhook to Slack notification in milliseconds, with AI in the middle</p>
+      <div class="section-label">Enterprise Capabilities</div>
+      <h2 class="section-title">Built for Modern Engineering Teams</h2>
+      <p class="section-subtitle">Everything required to automate triage, PR quality checks, and notifications seamlessly.</p>
 
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🔐</div>
-          <h3 class="feature-title">Secure OAuth</h3>
-          <p class="feature-desc">Sign in with your GitHub account. CSRF-protected OAuth flow with scoped permissions. Your tokens are never exposed to the client.</p>
+          <div class="feature-icon-wrapper">🔐</div>
+          <h3 class="feature-title">Secure OAuth & Secret Isolation</h3>
+          <p class="feature-desc">Per-repo HMAC-SHA256 signature verification with timing-safe checks. Tokens never leave server-side memory.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">⚡</div>
-          <h3 class="feature-title">Realtime Webhooks</h3>
-          <p class="feature-desc">Receives GitHub events (issues, PRs, pushes) via per-repo HMAC-verified webhooks. Idempotent processing handles duplicate deliveries.</p>
+          <div class="feature-icon-wrapper">🤖</div>
+          <h3 class="feature-title">AI Auto-Triage & Summaries</h3>
+          <p class="feature-desc">Gemini analyzes issue descriptions, evaluates urgency, predicts labels, and drafts friendly triage notes automatically.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🤖</div>
-          <h3 class="feature-title">AI Triage</h3>
-          <p class="feature-desc">Gemini AI analyzes issue and PR content to suggest labels, assess priority (critical/high/medium/low), and generate summaries.</p>
+          <div class="feature-icon-wrapper">⚡</div>
+          <h3 class="feature-title">Instant Rule Engine</h3>
+          <p class="feature-desc">Visual rule creator with nested conditions: matches regex, title contains, author, or labels. Zero code required.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">📋</div>
-          <h3 class="feature-title">Configurable Rules</h3>
-          <p class="feature-desc">Build rules in the UI: match on event type, keywords, author, labels. Trigger actions: add label, post comment, or notify Slack.</p>
+          <div class="feature-icon-wrapper">📣</div>
+          <h3 class="feature-title">Rich Slack Notifications</h3>
+          <p class="feature-desc">Slack Block Kit cards complete with author avatars, priority status chips, markdown summaries, and direct GitHub links.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">📣</div>
-          <h3 class="feature-title">Slack Notifications</h3>
-          <p class="feature-desc">Rich Block Kit messages with AI summaries, priority color bars, and direct links to GitHub. Know what matters, instantly.</p>
+          <div class="feature-icon-wrapper">📊</div>
+          <h3 class="feature-title">Live Audit Trail & Inspector</h3>
+          <p class="feature-desc">Full transparency: view every webhook delivery ID, raw payload JSON, execution duration, and retry status.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">📊</div>
-          <h3 class="feature-title">Live Dashboard</h3>
-          <p class="feature-desc">See every event received, every action taken, and every failure. Full audit trail with retry history and processing errors.</p>
+          <div class="feature-icon-wrapper">🔄</div>
+          <h3 class="feature-title">Idempotency & Resiliency</h3>
+          <p class="feature-desc">Automatic deduplication via GitHub's X-GitHub-Delivery header. Never send duplicate Slack alerts or multiple labels.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How it works Section -->
-  <section class="how-it-works" id="how-it-works" aria-labelledby="hiw-heading">
+  <!-- How It Works Flow -->
+  <section class="how-it-works" id="how-it-works">
     <div class="section-inner">
-      <div class="section-label">The flow</div>
-      <h2 class="section-title" id="hiw-heading">Four steps from event to action</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-number" aria-hidden="true">01</div>
-          <div class="step-content">
-            <h3 class="step-title">Connect a repository</h3>
-            <p class="step-desc">Sign in with GitHub, pick a repo you own. GitBot registers a webhook with a unique secret — GitHub will send events to your bot.</p>
-          </div>
+      <div class="section-label">Architecture</div>
+      <h2 class="section-title">How GitBot Processes Events</h2>
+      <div class="steps-container">
+        <div class="step-card">
+          <span class="step-num-badge">01</span>
+          <h3 class="step-title">Connect Repository</h3>
+          <p class="step-desc">One click registers a unique webhook on GitHub with an automated HMAC secret.</p>
         </div>
-        <div class="step-connector" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-number" aria-hidden="true">02</div>
-          <div class="step-content">
-            <h3 class="step-title">GitHub sends an event</h3>
-            <p class="step-desc">When someone opens an issue or PR, the HMAC-signed webhook fires. GitBot verifies the signature and stores the event for processing.</p>
-          </div>
+        <div class="step-card">
+          <span class="step-num-badge">02</span>
+          <h3 class="step-title">Webhook Fire</h3>
+          <p class="step-desc">GitHub emits events. GitBot validates payload signatures and records delivery idempotency.</p>
         </div>
-        <div class="step-connector" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-number" aria-hidden="true">03</div>
-          <div class="step-content">
-            <h3 class="step-title">Rules engine + AI evaluate</h3>
-            <p class="step-desc">Your configured rules are evaluated. Matching rules trigger actions. If AI triage is enabled, Gemini analyzes and prioritizes the item.</p>
-          </div>
+        <div class="step-card">
+          <span class="step-num-badge">03</span>
+          <h3 class="step-title">AI & Rule Evaluation</h3>
+          <p class="step-desc">Gemini analyzes context while the rules engine checks conditions in parallel.</p>
         </div>
-        <div class="step-connector" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-number" aria-hidden="true">04</div>
-          <div class="step-content">
-            <h3 class="step-title">Bot acts + notifies</h3>
-            <p class="step-desc">Labels applied, comments posted, Slack pinged — all with full audit logs. Every action is recorded with success/failure status.</p>
-          </div>
+        <div class="step-card">
+          <span class="step-num-badge">04</span>
+          <h3 class="step-title">Automated Action</h3>
+          <p class="step-desc">Labels assigned, comments posted, and Slack channels alerted with rich block cards.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA Section -->
-  <section class="cta-section" aria-labelledby="cta-heading">
+  <section class="cta-section">
     <div class="section-inner">
       <div class="cta-card">
-        <h2 class="cta-title" id="cta-heading">Ready to automate your GitHub workflow?</h2>
-        <p class="cta-subtitle">Free forever. No credit card. Deploy in minutes.</p>
-        <a href="/auth/github" class="btn btn-primary btn-xl" id="cta-signin-btn">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-          Start Automating
-        </a>
+        <h2 class="cta-title">Automate your GitHub workflow today</h2>
+        <p class="cta-subtitle">Free to deploy on Render or run locally. No credit card required.</p>
+        <div class="cta-buttons">
+          <a href="/auth/github" class="btn btn-primary btn-xl">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            Connect with GitHub
+          </a>
+          <a href="/auth/demo" class="btn btn-demo btn-xl">
+            ⚡ Open Instant Demo
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer" role="contentinfo">
+  <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-logo">
-        <span aria-hidden="true">⚡</span> GitBot
+      <div class="nav-logo">
+        <span class="logo-icon" style="width:26px; height:26px; font-size:0.9rem;">⚡</span>
+        <span style="font-size: 1rem; color: #fff;">GitBot</span>
       </div>
-      <p class="footer-text">Built with Node.js, PostgreSQL, and Gemini AI. Deployed on Render.</p>
+      <p class="footer-text">Built with Node.js, Express, PostgreSQL, Google Gemini AI & Slack Block Kit.</p>
     </div>
   </footer>
 

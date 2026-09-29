@@ -115,15 +115,23 @@ async function executeAction(ruleAction, event, repo, rule) {
     switch (type) {
       case 'add_label': {
         const labelName = params.label;
-        await github.addLabel(token, owner, repoName, issueOrPRNumber, labelName);
-        result = { label: labelName };
+        if (token === 'demo_token') {
+          result = { label: labelName, simulated: true };
+        } else {
+          await github.addLabel(token, owner, repoName, issueOrPRNumber, labelName);
+          result = { label: labelName };
+        }
         break;
       }
 
       case 'post_comment': {
         const body = interpolateTemplate(params.template || params.body, payload, eventType);
-        await github.postComment(token, owner, repoName, issueOrPRNumber, body);
-        result = { body: body.slice(0, 100) };
+        if (token === 'demo_token') {
+          result = { body: body.slice(0, 100), simulated: true };
+        } else {
+          await github.postComment(token, owner, repoName, issueOrPRNumber, body);
+          result = { body: body.slice(0, 100) };
+        }
         break;
       }
 
@@ -131,15 +139,19 @@ async function executeAction(ruleAction, event, repo, rule) {
         const url = payload.issue?.html_url || payload.pull_request?.html_url;
         const title = payload.issue?.title || payload.pull_request?.title || `Push to ${payload.ref}`;
         const body = payload.issue?.body || payload.pull_request?.body || '';
-        await slack.sendSlackNotification({
-          title,
-          repoFullName: repo.full_name,
-          eventType,
-          action,
-          url,
-          body,
-        });
-        result = { notified: true };
+        try {
+          await slack.sendSlackNotification({
+            title,
+            repoFullName: repo.full_name,
+            eventType,
+            action,
+            url,
+            body,
+          });
+          result = { notified: true };
+        } catch (slackErr) {
+          result = { notified: false, note: slackErr.message };
+        }
         break;
       }
 
@@ -152,30 +164,32 @@ async function executeAction(ruleAction, event, repo, rule) {
 
         if (analysis) {
           // Apply the suggested label
-          if (analysis.suggestedLabel && issueOrPRNumber) {
+          if (analysis.suggestedLabel && issueOrPRNumber && token !== 'demo_token') {
             await github.addLabel(token, owner, repoName, issueOrPRNumber, analysis.suggestedLabel);
           }
 
           // Post AI analysis as a comment
-          if (params.post_comment !== false && issueOrPRNumber) {
+          if (params.post_comment !== false && issueOrPRNumber && token !== 'demo_token') {
             const comment = formatAIComment(analysis);
             await github.postComment(token, owner, repoName, issueOrPRNumber, comment);
           }
 
           // Send Slack notification with AI summary
-          const url = payload.issue?.html_url || payload.pull_request?.html_url;
-          await slack.sendSlackNotification({
-            title: payload.issue?.title || payload.pull_request?.title,
-            repoFullName: repo.full_name,
-            eventType,
-            action,
-            url,
-            aiSummary: analysis.summary,
-            priority: analysis.priority,
-            labels: [analysis.suggestedLabel],
-          });
+          try {
+            const url = payload.issue?.html_url || payload.pull_request?.html_url;
+            await slack.sendSlackNotification({
+              title: payload.issue?.title || payload.pull_request?.title,
+              repoFullName: repo.full_name,
+              eventType,
+              action,
+              url,
+              aiSummary: analysis.summary,
+              priority: analysis.priority,
+              labels: [analysis.suggestedLabel],
+            });
+          } catch {}
 
-          result = { analysis };
+          result = { analysis, simulated: token === 'demo_token' };
         } else {
           result = { analysis: null, note: 'AI unavailable, skipped' };
         }

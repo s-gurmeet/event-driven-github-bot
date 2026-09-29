@@ -133,6 +133,13 @@ async function initAuth() {
   const avatarMobile = document.getElementById('user-avatar-mobile');
   if (avatarMobile) { avatarMobile.src = avatar; avatarMobile.alt = login; }
 
+  if (data.login === 'demo-developer') {
+    const demoTag = document.getElementById('demo-mode-tag');
+    if (demoTag) demoTag.style.display = 'inline-block';
+    const roleBadge = document.getElementById('user-role-badge');
+    if (roleBadge) roleBadge.textContent = 'Demo Sandbox';
+  }
+
   return true;
 }
 
@@ -812,6 +819,40 @@ function bindEventListeners() {
     state.events.typeFilter = e.target.value;
     loadEvents(1);
   });
+
+  // Simulator buttons & form
+  document.getElementById('btn-open-simulate-modal')?.addEventListener('click', () => openModal('simulate-modal'));
+  document.getElementById('overview-new-rule-btn')?.addEventListener('click', () => openCreateRuleModal());
+  document.getElementById('simulate-form')?.addEventListener('submit', submitSimulateForm);
+}
+
+window.openSimulateModal = () => openModal('simulate-modal');
+
+async function submitSimulateForm(e) {
+  e.preventDefault();
+  const eventType = document.getElementById('sim-event-type').value;
+  const title = document.getElementById('sim-title').value.trim();
+  const body = document.getElementById('sim-body').value.trim();
+
+  const btn = document.getElementById('sim-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Processing Webhook…';
+
+  try {
+    const res = await apiFetch('/events/simulate', {
+      method: 'POST',
+      body: JSON.stringify({ eventType, title, body })
+    });
+    showToast(`⚡ Webhook processed! ${res.actions?.length || 0} action(s) triggered.`, 'success');
+    closeModal('simulate-modal');
+    loadOverview();
+    if (state.currentTab === 'events') loadEvents(1);
+  } catch (err) {
+    showToast(`Simulation error: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Dispatch Webhook';
+  }
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
