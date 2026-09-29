@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — GitBot</title>
+  <meta name="description" content="GitBot dashboard: manage repositories, configure automation rules, and view the live event log." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="dashboard-page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Sidebar navigation" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-icon" aria-hidden="true">⚡</span>
+        <span class="logo-text">GitBot</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-tab="overview" id="nav-overview" aria-selected="true">
+        <span class="nav-icon" aria-hidden="true">📊</span>
+        Overview
+      </button>
+      <button class="nav-item" data-tab="repos" id="nav-repos" aria-selected="false">
+        <span class="nav-icon" aria-hidden="true">📁</span>
+        Repositories
+      </button>
+      <button class="nav-item" data-tab="events" id="nav-events" aria-selected="false">
+        <span class="nav-icon" aria-hidden="true">⚡</span>
+        Events
+        <span class="nav-badge" id="events-badge" style="display:none"></span>
+      </button>
+      <button class="nav-item" data-tab="rules" id="nav-rules" aria-selected="false">
+        <span class="nav-icon" aria-hidden="true">📋</span>
+        Rules
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card" id="user-card">
+        <img class="user-avatar" id="user-avatar" src="" alt="User avatar" width="32" height="32" />
+        <div class="user-info">
+          <span class="user-login" id="user-login"></span>
+          <span class="user-sub">GitHub Account</span>
+        </div>
+      </div>
+      <form action="/auth/logout" method="post" style="margin:0">
+        <button type="submit" class="btn-logout" id="logout-btn">Sign out</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Mobile header -->
+  <header class="mobile-header" role="banner">
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+      <span class="hamburger" aria-hidden="true">☰</span>
+    </button>
+    <div class="mobile-logo">
+      <span aria-hidden="true">⚡</span> GitBot
+    </div>
+    <img class="user-avatar-mobile" id="user-avatar-mobile" src="" alt="" width="28" height="28" />
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content" role="main">
+
+    <!-- ─── Overview Tab ───────────────────────────────────────────────────── -->
+    <section class="tab-panel active" id="tab-overview" aria-labelledby="overview-heading">
+      <div class="page-header">
+        <h1 class="page-title" id="overview-heading">Overview</h1>
+        <p class="page-subtitle">Your automation activity at a glance</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid" role="list">
+        <div class="stat-card" role="listitem">
+          <div class="stat-label">Events (24h)</div>
+          <div class="stat-value" id="stat-events-24h">—</div>
+          <div class="stat-sub">GitHub webhooks received</div>
+        </div>
+        <div class="stat-card" role="listitem">
+          <div class="stat-label">Events (7d)</div>
+          <div class="stat-value" id="stat-events-7d">—</div>
+          <div class="stat-sub">Past week total</div>
+        </div>
+        <div class="stat-card stat-success" role="listitem">
+          <div class="stat-label">Actions Taken</div>
+          <div class="stat-value" id="stat-actions-success">—</div>
+          <div class="stat-sub">Successful bot actions</div>
+        </div>
+        <div class="stat-card stat-error" role="listitem">
+          <div class="stat-label">Failed Actions</div>
+          <div class="stat-value" id="stat-actions-failed">—</div>
+          <div class="stat-sub">Need attention</div>
+        </div>
+        <div class="stat-card" role="listitem">
+          <div class="stat-label">Connected Repos</div>
+          <div class="stat-value" id="stat-repos">—</div>
+          <div class="stat-sub">Active repositories</div>
+        </div>
+        <div class="stat-card" role="listitem">
+          <div class="stat-label">Active Rules</div>
+          <div class="stat-value" id="stat-rules">—</div>
+          <div class="stat-sub">Automation rules running</div>
+        </div>
+      </div>
+
+      <!-- Event breakdown by type -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Events by Type (7 days)</h2>
+        </div>
+        <div class="card-body">
+          <div class="event-type-bars" id="event-type-bars">
+            <div class="empty-state">Loading stats...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent events preview -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Recent Activity</h2>
+          <button class="btn btn-sm btn-ghost" onclick="switchTab('events')" aria-label="View all events">View all</button>
+        </div>
+        <div class="card-body p-0">
+          <div class="events-list" id="recent-events-list">
+            <div class="loading-spinner" aria-live="polite" aria-label="Loading recent events">
+              <div class="spinner" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Repositories Tab ───────────────────────────────────────────────── -->
+    <section class="tab-panel" id="tab-repos" aria-labelledby="repos-heading">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="repos-heading">Repositories</h1>
+          <p class="page-subtitle">Connect GitHub repositories to receive webhook events</p>
+        </div>
+        <button class="btn btn-primary" id="connect-repo-btn">
+          + Connect Repository
+        </button>
+      </div>
+
+      <!-- Connected repos list -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Connected Repositories</h2>
+        </div>
+        <div class="card-body p-0">
+          <div id="connected-repos-list">
+            <div class="loading-spinner" aria-live="polite" aria-label="Loading repositories">
+              <div class="spinner" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Events Tab ─────────────────────────────────────────────────────── -->
+    <section class="tab-panel" id="tab-events" aria-labelledby="events-heading">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="events-heading">Event Log</h1>
+          <p class="page-subtitle">All webhook events received from connected repositories</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="refresh-events-btn" aria-label="Refresh events">↻ Refresh</button>
+      </div>
+
+      <div class="events-filters">
+        <select class="select" id="events-repo-filter" aria-label="Filter by repository">
+          <option value="">All repositories</option>
+        </select>
+        <select class="select" id="events-type-filter" aria-label="Filter by event type">
+          <option value="">All event types</option>
+          <option value="issues">Issues</option>
+          <option value="pull_request">Pull Requests</option>
+          <option value="push">Push</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <div class="card-body p-0">
+          <div id="events-list">
+            <div class="loading-spinner" aria-live="polite" aria-label="Loading events">
+              <div class="spinner" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="events-pagination" role="navigation" aria-label="Event pagination"></div>
+    </section>
+
+    <!-- ─── Rules Tab ──────────────────────────────────────────────────────── -->
+    <section class="tab-panel" id="tab-rules" aria-labelledby="rules-heading">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="rules-heading">Automation Rules</h1>
+          <p class="page-subtitle">Configure what the bot does when events arrive</p>
+        </div>
+        <button class="btn btn-primary" id="create-rule-btn">
+          + Create Rule
+        </button>
+      </div>
+
+      <!-- Rule templates -->
+      <div class="card card-accent">
+        <div class="card-header">
+          <h2 class="card-title">Quick Start Templates</h2>
+        </div>
+        <div class="card-body">
+          <div class="templates-grid" id="templates-grid">
+            <button class="template-card" data-template="bug-label" aria-label="Use bug label template">
+              <div class="template-icon" aria-hidden="true">🐛</div>
+              <div class="template-name">Bug Labeler</div>
+              <div class="template-desc">Auto-label issues with "bug" when title contains "bug", "crash", or "error"</div>
+            </button>
+            <button class="template-card" data-template="ai-triage" aria-label="Use AI triage template">
+              <div class="template-icon" aria-hidden="true">🤖</div>
+              <div class="template-name">AI Triage</div>
+              <div class="template-desc">Run Gemini AI on all new issues to suggest labels, priority and post a triage comment</div>
+            </button>
+            <button class="template-card" data-template="pr-notify" aria-label="Use PR notification template">
+              <div class="template-icon" aria-hidden="true">🔀</div>
+              <div class="template-name">PR Notifier</div>
+              <div class="template-desc">Send a Slack alert whenever a new pull request is opened</div>
+            </button>
+            <button class="template-card" data-template="push-notify" aria-label="Use push notification template">
+              <div class="template-icon" aria-hidden="true">📦</div>
+              <div class="template-name">Push Monitor</div>
+              <div class="template-desc">Alert Slack when code is pushed to main or master branch</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rules list -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Your Rules</h2>
+        </div>
+        <div class="card-body p-0">
+          <div id="rules-list">
+            <div class="loading-spinner" aria-live="polite" aria-label="Loading rules">
+              <div class="spinner" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ─── Modals ─────────────────────────────────────────────────────────────── -->
+
+  <!-- Connect Repository Modal -->
+  <div class="modal-overlay" id="connect-repo-modal" role="dialog" aria-modal="true" aria-labelledby="connect-repo-title" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="connect-repo-title">Connect a Repository</h2>
+        <button class="modal-close" aria-label="Close modal" data-modal="connect-repo-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Select a repository you own. GitBot will register a webhook and start receiving events.</p>
+        <div class="search-box">
+          <input type="search" class="input" id="repo-search" placeholder="Search repositories…" aria-label="Search repositories" />
+        </div>
+        <div id="available-repos-list" class="repo-selector-list" role="listbox" aria-label="Available repositories">
+          <div class="loading-spinner" aria-live="polite" aria-label="Loading available repositories">
+            <div class="spinner" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Rule Modal -->
+  <div class="modal-overlay" id="rule-modal" role="dialog" aria-modal="true" aria-labelledby="rule-modal-title" aria-hidden="true">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h2 class="modal-title" id="rule-modal-title">Create Rule</h2>
+        <button class="modal-close" aria-label="Close modal" data-modal="rule-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="rule-form" novalidate>
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label class="form-label" for="rule-name">Rule Name</label>
+              <input type="text" class="input" id="rule-name" placeholder="e.g. Bug Issue Labeler" required aria-required="true" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="rule-repo">Repository</label>
+              <select class="select" id="rule-repo" aria-label="Select repository">
+                <option value="">All connected repos</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rule-event-type">Trigger Event</label>
+            <select class="select" id="rule-event-type" required aria-required="true">
+              <option value="issues">Issue (opened, closed, labeled…)</option>
+              <option value="pull_request">Pull Request (opened, closed, merged…)</option>
+              <option value="push">Push (code pushed to branch)</option>
+            </select>
+          </div>
+
+          <!-- Conditions -->
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3 class="form-section-title">Conditions <span class="form-section-hint">(all must match)</span></h3>
+              <button type="button" class="btn btn-sm btn-ghost" id="add-condition-btn">+ Add condition</button>
+            </div>
+            <div id="conditions-list" class="conditions-list">
+              <div class="empty-conditions">No conditions — rule matches all events of this type</div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3 class="form-section-title">Actions <span class="form-section-hint">(executed in order)</span></h3>
+              <button type="button" class="btn btn-sm btn-ghost" id="add-action-btn">+ Add action</button>
+            </div>
+            <div id="actions-list" class="actions-list">
+              <div class="empty-actions">Add at least one action</div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" data-modal="rule-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="rule-submit-btn">Create Rule</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Detail Modal -->
+  <div class="modal-overlay" id="event-detail-modal" role="dialog" aria-modal="true" aria-labelledby="event-detail-title" aria-hidden="true">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h2 class="modal-title" id="event-detail-title">Event Details</h2>
+        <button class="modal-close" aria-label="Close modal" data-modal="event-detail-modal">✕</button>
+      </div>
+      <div class="modal-body" id="event-detail-body">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast-container" id="toast-container" role="alert" aria-live="polite"></div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
