@@ -168,14 +168,14 @@
           <h1 class="page-title" id="repos-heading">Connected Repositories</h1>
           <p class="page-subtitle">Configure per-repository webhook secrets and active event listeners</p>
         </div>
-        <button class="btn btn-primary" id="connect-repo-btn">
-          + Connect Repository
+        <button class="btn btn-primary btn-md" id="connect-repo-btn">
+          <span>+</span> Connect Repository
         </button>
       </div>
 
       <div class="card">
         <div class="card-body p-0">
-          <div id="repos-list" class="repos-list">
+          <div id="connected-repos-list" class="repos-list">
             <div class="loading-spinner"><div class="spinner"></div></div>
           </div>
         </div>
@@ -283,9 +283,21 @@
         <button class="btn-icon" aria-label="Close modal" data-modal="connect-repo-modal">✕</button>
       </div>
       <div class="modal-body">
-        <p style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:16px;">
-          Choose a repository. GitBot will register an HMAC-SHA256 verified webhook for issues, pull requests, and pushes.
-        </p>
+        <!-- Manual Connect Form -->
+        <form id="manual-connect-form" style="margin-bottom: 20px;">
+          <label class="form-label" for="manual-repo-input" style="margin-bottom: 6px; display: block;">Connect by Repository Full Name</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" class="input" id="manual-repo-input" placeholder="e.g. your-username/my-repo" required />
+            <button type="submit" class="btn btn-primary btn-sm" id="manual-connect-submit-btn">Connect</button>
+          </div>
+        </form>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin: 16px 0;">
+          <div style="flex: 1; height: 1px; background: var(--border);"></div>
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Or select from your account</span>
+          <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        </div>
+
         <div id="available-repos-list">
           <div class="loading-spinner"><div class="spinner"></div></div>
         </div>

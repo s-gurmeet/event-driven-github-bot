@@ -17,7 +17,17 @@ router.use(requireAuth);
 router.get('/repos/available', async (req, res) => {
   try {
     const userResult = await db.query('SELECT access_token FROM users WHERE id = $1', [req.session.userId]);
-    const token = userResult.rows[0].access_token;
+    const token = userResult.rows[0]?.access_token;
+
+    if (!token || token === 'demo_token') {
+      return res.json([
+        { id: 901, full_name: 'octocat/hello-world', private: false, description: 'My first GitHub repository', language: 'JavaScript' },
+        { id: 902, full_name: 'octocat/event-driven-bot', private: false, description: 'Webhook listener and automation engine', language: 'TypeScript' },
+        { id: 903, full_name: 'octocat/frontend-app', private: false, description: 'React & Tailwind dashboard interface', language: 'TypeScript' },
+        { id: 904, full_name: 'octocat/cloud-infra', private: true, description: 'Terraform & Docker compose scripts', language: 'HCL' }
+      ]);
+    }
+
     const repos = await github.listUserRepos(token);
     const simplified = repos.map(r => ({
       id: r.id,
@@ -59,8 +69,8 @@ router.get('/repos', async (req, res) => {
  */
 router.post('/repos', async (req, res) => {
   const { fullName, githubRepoId } = req.body;
-  if (!fullName || !githubRepoId) {
-    return res.status(400).json({ error: 'fullName and githubRepoId are required' });
+  if (!fullName) {
+    return res.status(400).json({ error: 'fullName is required' });
   }
 
   const [owner, repoName] = fullName.split('/');
@@ -68,9 +78,11 @@ router.post('/repos', async (req, res) => {
     return res.status(400).json({ error: 'Invalid repo full name format (expected owner/repo)' });
   }
 
+  const repoNumericId = githubRepoId || (Math.floor(Math.random() * 9000000) + 1000000);
+
   try {
     const userResult = await db.query('SELECT access_token FROM users WHERE id = $1', [req.session.userId]);
-    const token = userResult.rows[0].access_token;
+    const token = userResult.rows[0]?.access_token;
 
     // Generate a unique webhook secret for this repo
     const webhookSecret = crypto.randomBytes(32).toString('hex');
@@ -81,22 +93,27 @@ router.post('/repos', async (req, res) => {
        VALUES ($1, $2, $3, $4)
        ON CONFLICT (user_id, github_repo_id) DO UPDATE SET active = TRUE
        RETURNING id`,
-      [req.session.userId, githubRepoId, fullName, webhookSecret]
+      [req.session.userId, repoNumericId, fullName, webhookSecret]
     );
     const repoId = repoInsert.rows[0].id;
 
-    // Register the webhook on GitHub
+    // Register the webhook on GitHub (or mock in demo mode)
     const webhookUrl = `${process.env.APP_URL}/webhooks/github/${repoId}`;
     let webhookId;
-    try {
-      webhookId = await github.createWebhook(
-        token, owner, repoName, webhookUrl, webhookSecret,
-        ['issues', 'pull_request', 'push']
-      );
-    } catch (err) {
-      // Roll back repo insert if webhook fails
-      await db.query('DELETE FROM repositories WHERE id = $1', [repoId]);
-      throw new Error(`Failed to create GitHub webhook: ${err.message}`);
+
+    if (token === 'demo_token') {
+      webhookId = Math.floor(Math.random() * 9000000) + 1000000;
+    } else {
+      try {
+        webhookId = await github.createWebhook(
+          token, owner, repoName, webhookUrl, webhookSecret,
+          ['issues', 'pull_request', 'push']
+        );
+      } catch (err) {
+        // Roll back repo insert if webhook fails
+        await db.query('DELETE FROM repositories WHERE id = $1', [repoId]);
+        throw new Error(`Failed to create GitHub webhook: ${err.message}`);
+      }
     }
 
     // Store webhook ID for later deletion

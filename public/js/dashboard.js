@@ -344,7 +344,8 @@ function renderPagination(total, currentPage, limit, containerId, onPageChange) 
 // ─── Repositories ─────────────────────────────────────────────────────────────
 
 async function loadRepos() {
-  const container = document.getElementById('connected-repos-list');
+  const container = document.getElementById('connected-repos-list') || document.getElementById('repos-list');
+  if (!container) return;
   container.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
 
   try {
@@ -359,7 +360,8 @@ async function loadRepos() {
 }
 
 function renderConnectedRepos() {
-  const container = document.getElementById('connected-repos-list');
+  const container = document.getElementById('connected-repos-list') || document.getElementById('repos-list');
+  if (!container) return;
   if (!state.repos.length) {
     container.innerHTML = '<div class="empty-state">No repositories connected yet. Click "Connect Repository" to get started.</div>';
     return;
@@ -824,6 +826,35 @@ function bindEventListeners() {
   document.getElementById('btn-open-simulate-modal')?.addEventListener('click', () => openModal('simulate-modal'));
   document.getElementById('overview-new-rule-btn')?.addEventListener('click', () => openCreateRuleModal());
   document.getElementById('simulate-form')?.addEventListener('submit', submitSimulateForm);
+
+  // Manual connect repo form
+  document.getElementById('manual-connect-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('manual-repo-input');
+    const fullName = input.value.trim();
+    if (!fullName || !fullName.includes('/')) {
+      showToast('Please enter repository in owner/repo format', 'error');
+      return;
+    }
+    const btn = document.getElementById('manual-connect-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Connecting…';
+    try {
+      await apiFetch('/repos', {
+        method: 'POST',
+        body: JSON.stringify({ fullName, githubRepoId: Math.floor(Math.random() * 9000000) + 1000000 })
+      });
+      showToast(`Connected ${fullName} ✓`, 'success');
+      input.value = '';
+      closeModal('connect-repo-modal');
+      loadRepos();
+    } catch (err) {
+      showToast(`Failed to connect: ${err.message}`, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Connect';
+    }
+  });
 }
 
 window.openSimulateModal = () => openModal('simulate-modal');
