@@ -75,17 +75,21 @@
       if (b) {
         if (id === s.btnId) {
           b.classList.add('active');
-          b.style.borderColor = 'var(--brand)';
-          b.style.color = '#fff';
+          b.style.borderColor = '#6366f1';
+          b.style.background = 'rgba(99, 102, 241, 0.25)';
+          b.style.color = '#ffffff';
+          b.style.boxShadow = '0 0 16px rgba(99, 102, 241, 0.4)';
         } else {
           b.classList.remove('active');
           b.style.borderColor = 'var(--border)';
+          b.style.background = 'rgba(255, 255, 255, 0.04)';
           b.style.color = 'var(--text-secondary)';
+          b.style.boxShadow = 'none';
         }
       }
     });
 
-    // Update node details
+    // Update node details with brief highlight animation
     const nWebhook = document.getElementById('node-webhook-detail');
     const nAi = document.getElementById('node-ai-detail');
     const nRules = document.getElementById('node-rules-detail');
@@ -96,6 +100,12 @@
     if (nRules) nRules.textContent = s.nodes.rules;
     if (nDispatch) nDispatch.textContent = s.nodes.dispatch;
 
+    document.querySelectorAll('.pipeline-node').forEach(node => {
+      node.style.transition = 'all 0.2s ease';
+      node.style.transform = 'scale(1.02)';
+      setTimeout(() => { node.style.transform = 'scale(1)'; }, 200);
+    });
+
     // Animate log lines
     if (!logContainer) return;
     logContainer.innerHTML = '';
@@ -104,6 +114,8 @@
       const line = document.createElement('div');
       line.className = 'log-line';
       line.style.opacity = '0';
+      line.style.transform = 'translateY(6px)';
+      line.style.transition = 'all 0.25s ease';
       line.innerHTML = `
         <span class="log-time">${item.time}</span>
         <span class="log-badge ${item.class}">${item.badge}</span>
@@ -114,9 +126,27 @@
       setTimeout(() => {
         line.style.opacity = '1';
         line.style.transform = 'translateY(0)';
-      }, idx * 120);
+      }, idx * 100);
     });
   };
+
+  // Attach explicit click event listeners to buttons
+  const simBtns = [
+    { id: 'btn-sim-issue', type: 'issue' },
+    { id: 'btn-sim-pr', type: 'pr' },
+    { id: 'btn-sim-push', type: 'push' }
+  ];
+
+  simBtns.forEach(({ id, type }) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.simulateEvent(type);
+      });
+    }
+  });
 
   window.copyDemoLogs = function () {
     if (!logContainer) return;

@@ -547,6 +547,17 @@ code, pre {
   gap: 8px;
   flex-wrap: wrap;
 }
+.trigger-buttons-group .btn {
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.trigger-buttons-group .btn.active,
+.trigger-buttons-group .btn-ghost.active {
+  background: rgba(99, 102, 241, 0.25) !important;
+  border-color: #6366f1 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.4) !important;
+}
 
 .pipeline-nodes-grid {
   display: grid;
