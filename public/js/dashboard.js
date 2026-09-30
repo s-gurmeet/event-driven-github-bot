@@ -296,7 +296,7 @@ function renderEventsList(events, containerId, compact) {
     const title = ev.issue_title || ev.pr_title || (ev.pusher_name ? `Push by ${ev.pusher_name}` : ev.event_type);
     const statusClass = ev.processed ? (ev.processing_error ? 'status-error' : 'status-success') : 'status-pending';
     const statusLabel = ev.processed ? (ev.processing_error ? 'Error' : 'Processed') : 'Pending';
-    const link = ev.github_url ? `<a href="${escapeHtml(ev.github_url)}" target="_blank" rel="noopener noreferrer" class="event-github-link" aria-label="View on GitHub">↗</a>` : '';
+    const link = ev.github_url ? `<a href="${escapeHtml(ev.github_url)}" target="_blank" rel="noopener noreferrer" class="event-github-link" aria-label="View on GitHub">${icon('external-link', 12)}</a>` : '';
 
     return `
       <div class="event-row ${compact ? 'event-row-compact' : ''}" 
