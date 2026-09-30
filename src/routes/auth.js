@@ -15,6 +15,10 @@ const APP_URL = process.env.APP_URL;
  * Generates a random state token to prevent CSRF.
  */
 router.get('/github', (req, res) => {
+  if (!GITHUB_CLIENT_ID || GITHUB_CLIENT_ID === 'your_github_oauth_client_id' || GITHUB_CLIENT_ID === 'your_client_id') {
+    console.log('[Auth] GITHUB_CLIENT_ID not configured, automatically routing to demo mode');
+    return res.redirect('/auth/demo');
+  }
   const state = crypto.randomBytes(16).toString('hex');
   req.session.oauthState = state;
 

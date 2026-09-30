@@ -5,6 +5,44 @@
 
 'use strict';
 
+// ─── SVG Icon System ─────────────────────────────────────────────────────────
+// Lucide-style icons — crisp, professional, consistent
+
+const SVG_PATHS = {
+  zap:             `<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>`,
+  dashboard:       `<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>`,
+  'git-branch':    `<line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>`,
+  activity:        `<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>`,
+  sliders:         `<line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="6" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="6" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="10" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="12" y2="12"/><line x1="17" x2="23" y1="16" y2="16"/>`,
+  bug:             `<path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>`,
+  'check-circle':  `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/>`,
+  bell:            `<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>`,
+  'git-pull-request': `<circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" x2="6" y1="9" y2="21"/>`,
+  'git-merge':     `<circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/>`,
+  'refresh-cw':    `<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>`,
+  package:         `<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>`,
+  bot:             `<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>`,
+  rocket:          `<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>`,
+  lightbulb:       `<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>`,
+  filter:          `<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>`,
+  target:          `<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>`,
+  pencil:          `<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>`,
+  trash:           `<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>`,
+  plus:            `<path d="M5 12h14"/><path d="M12 5v14"/>`,
+  x:               `<path d="M18 6 6 18"/><path d="m6 6 12 12"/>`,
+  menu:            `<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>`,
+  database:        `<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>`,
+  'external-link': `<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 0 2-2h6"/>`,
+  'log-out':       `<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>`,
+  'toggle-left':   `<rect width="20" height="12" x="2" y="6" rx="6"/><circle cx="8" cy="12" r="2"/>`,
+  'toggle-right':  `<rect width="20" height="12" x="2" y="6" rx="6"/><circle cx="16" cy="12" r="2"/>`,
+};
+
+function icon(name, size = 16, extraClass = '') {
+  const paths = SVG_PATHS[name] || SVG_PATHS['zap'];
+  return `<svg class="icon ${extraClass}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+}
+
 // ─── State ───────────────────────────────────────────────────────────────────
 
 const state = {
@@ -37,9 +75,11 @@ async function apiFetch(path, options = {}) {
 
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
+  if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
-  toast.textContent = message;
+  const iconName = type === 'success' ? 'check-circle' : type === 'error' ? 'bug' : 'zap';
+  toast.innerHTML = `<span style="display:inline-flex; align-items:center; gap:8px;">${icon(iconName, 15)}<span>${escapeHtml(message)}</span></span>`;
   toast.setAttribute('role', 'status');
   container.appendChild(toast);
   // Animate in
@@ -162,6 +202,9 @@ async function loadOverview() {
     // Event type breakdown bars
     renderEventTypeBars(stats.eventsByType || []);
 
+    // Keep overview events in state so the detail modal can resolve them
+    state.events.items = events;
+
     // Recent events preview
     renderEventsList(events, 'recent-events-list', true);
   } catch (err) {
@@ -214,18 +257,21 @@ async function loadEvents(page = 1) {
     state.events.items = events;
     state.events.total = data.total;
 
-    renderEventsList(events, 'events-list', false);
+    renderEventsList(events, 'events-full-list', false);
     renderPagination(data.total, page, 20, 'events-pagination', loadEvents);
   } catch (err) {
-    document.getElementById('events-list').innerHTML = `<div class="error-state">Failed to load events: ${escapeHtml(err.message)}</div>`;
+    const container = document.getElementById('events-full-list');
+    if (container) {
+      container.innerHTML = `<div class="error-state">Failed to load events: ${escapeHtml(err.message)}</div>`;
+    }
   }
 }
 
 function getEventIcon(eventType, action) {
-  if (eventType === 'issues') return action === 'opened' ? '🐛' : action === 'closed' ? '✅' : '🔔';
-  if (eventType === 'pull_request') return action === 'opened' ? '🔀' : action === 'merged' ? '🎉' : '🔄';
-  if (eventType === 'push') return '📦';
-  return '🤖';
+  if (eventType === 'issues') return action === 'opened' ? icon('bug', 15) : action === 'closed' ? icon('check-circle', 15) : icon('bell', 15);
+  if (eventType === 'pull_request') return action === 'opened' ? icon('git-pull-request', 15) : action === 'merged' ? icon('git-merge', 15) : icon('refresh-cw', 15);
+  if (eventType === 'push') return icon('package', 15);
+  return icon('bot', 15);
 }
 
 function getEventBadgeClass(eventType) {
@@ -292,7 +338,7 @@ async function openEventDetail(eventId) {
           <span>${event ? escapeHtml(event.repo_full_name) : ''}</span>
           <span>${event ? formatRelativeTime(event.created_at) : ''}</span>
         </div>
-        ${event && event.processing_error ? `<div class="error-banner">⚠️ Processing error: ${escapeHtml(event.processing_error)}</div>` : ''}
+        ${event && event.processing_error ? `<div class="error-banner">${icon('bug', 14)} Processing error: ${escapeHtml(event.processing_error)}</div>` : ''}
       </div>
 
       <div class="detail-section">
@@ -369,7 +415,7 @@ function renderConnectedRepos() {
 
   container.innerHTML = state.repos.map(repo => `
     <div class="repo-row">
-      <div class="repo-icon" aria-hidden="true">📁</div>
+      <div class="repo-icon" aria-hidden="true">${icon('git-branch', 18)}</div>
       <div class="repo-info">
         <div class="repo-name">${escapeHtml(repo.full_name)}</div>
         <div class="repo-meta">
@@ -381,7 +427,7 @@ function renderConnectedRepos() {
       <button class="btn btn-sm btn-danger" 
         onclick="disconnectRepo(${repo.id}, '${escapeHtml(repo.full_name)}')"
         aria-label="Disconnect ${escapeHtml(repo.full_name)}">
-        Disconnect
+        ${icon('x', 13)} Disconnect
       </button>
     </div>`).join('');
 }
@@ -472,7 +518,7 @@ async function connectRepo(githubRepoId, fullName) {
       method: 'POST',
       body: JSON.stringify({ fullName, githubRepoId }),
     });
-    showToast(`Connected ${fullName} ✓`, 'success');
+    showToast(`Connected ${fullName}`, 'success');
     closeModal('connect-repo-modal');
     loadRepos();
   } catch (err) {
@@ -486,29 +532,36 @@ window.connectRepo = connectRepo;
 // ─── Rules ────────────────────────────────────────────────────────────────────
 
 const RULE_TEMPLATES = {
-  'bug-label': {
-    name: 'Bug Issue Labeler',
+  bug_triage: {
+    name: 'AI Bug Triage',
     eventType: 'issues',
     conditions: [{ field: 'issue.title', operator: 'contains', value: 'bug' }],
-    actions: [{ type: 'add_label', params: { label: 'bug' } }],
+    actions: [
+      { type: 'ai_triage', params: { post_comment: true } },
+      { type: 'add_label', params: { label: 'bug' } },
+      { type: 'slack_notify', params: {} },
+    ],
   },
-  'ai-triage': {
-    name: 'AI Triage (Gemini)',
-    eventType: 'issues',
-    conditions: [{ field: 'action', operator: 'equals', value: 'opened' }],
-    actions: [{ type: 'ai_triage', params: { post_comment: true } }],
-  },
-  'pr-notify': {
-    name: 'PR Slack Notifier',
+  pr_review: {
+    name: 'PR Review Alert',
     eventType: 'pull_request',
     conditions: [{ field: 'action', operator: 'equals', value: 'opened' }],
-    actions: [{ type: 'slack_notify', params: {} }],
+    actions: [
+      { type: 'ai_triage', params: { post_comment: true } },
+      { type: 'slack_notify', params: {} },
+    ],
   },
-  'push-notify': {
-    name: 'Main Branch Push Monitor',
+  main_push: {
+    name: 'Main Branch Push',
     eventType: 'push',
     conditions: [{ field: 'ref', operator: 'contains', value: 'refs/heads/main' }],
     actions: [{ type: 'slack_notify', params: {} }],
+  },
+  feature_request: {
+    name: 'Feature Request Tag',
+    eventType: 'issues',
+    conditions: [{ field: 'issue.title', operator: 'matches_regex', value: 'feat|feature' }],
+    actions: [{ type: 'add_label', params: { label: 'enhancement' } }],
   },
 };
 
@@ -535,10 +588,14 @@ function renderRulesList() {
     const scope = rule.repo_full_name || 'All repositories';
     const condCount = (rule.conditions || []).length;
     const actCount = (rule.actions || []).length;
+    const badgeClass = rule.event_type === 'issues' ? 'badge-issue' : (rule.event_type === 'pull_request' ? 'badge-pr' : 'badge-push');
+    const eventIconName = rule.event_type === 'issues' ? 'bug' : (rule.event_type === 'pull_request' ? 'git-pull-request' : 'rocket');
+
     return `
       <div class="rule-row">
         <div class="rule-info">
           <div class="rule-name-row">
+            <span class="rule-event-icon">${icon(eventIconName, 16)}</span>
             <span class="rule-name">${escapeHtml(rule.name)}</span>
             <span class="toggle-switch" title="${rule.active ? 'Active' : 'Inactive'}">
               <input type="checkbox" id="rule-toggle-${rule.id}" class="toggle-input" 
@@ -549,15 +606,15 @@ function renderRulesList() {
             </span>
           </div>
           <div class="rule-meta">
-            <span class="badge badge-info">${escapeHtml(rule.event_type)}</span>
-            <span>${escapeHtml(scope)}</span>
-            <span>${condCount} condition${condCount !== 1 ? 's' : ''}</span>
-            <span>${actCount} action${actCount !== 1 ? 's' : ''}</span>
+            <span class="badge ${badgeClass}">${escapeHtml(rule.event_type.toUpperCase())}</span>
+            <span class="rule-meta-tag">${icon('git-branch', 12)} ${escapeHtml(scope)}</span>
+            <span class="rule-meta-tag">${icon('filter', 12)} ${condCount} condition${condCount !== 1 ? 's' : ''}</span>
+            <span class="rule-meta-tag">${icon('target', 12)} ${actCount} action${actCount !== 1 ? 's' : ''}</span>
           </div>
         </div>
         <div class="rule-actions">
-          <button class="btn btn-sm btn-ghost" onclick="editRule(${rule.id})" aria-label="Edit ${escapeHtml(rule.name)}">Edit</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteRule(${rule.id}, '${escapeHtml(rule.name)}')" aria-label="Delete ${escapeHtml(rule.name)}">Delete</button>
+          <button class="btn btn-sm btn-ghost" onclick="editRule(${rule.id})" aria-label="Edit ${escapeHtml(rule.name)}">${icon('pencil', 13)} Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRule(${rule.id}, '${escapeHtml(rule.name)}')" aria-label="Delete ${escapeHtml(rule.name)}">${icon('trash', 13)} Delete</button>
         </div>
       </div>`;
   }).join('');
@@ -666,7 +723,7 @@ function renderConditionsList() {
       </select>
       <input class="input input-sm" value="${escapeHtml(cond.value)}" placeholder="Value"
              onchange="updateCondition(${i},'value',this.value)" aria-label="Condition value" />
-      <button class="btn-icon" onclick="removeCondition(${i})" aria-label="Remove condition">✕</button>
+      <button class="btn-icon" onclick="removeCondition(${i})" aria-label="Remove condition">${icon('x', 14)}</button>
     </div>`).join('');
 }
 
@@ -700,7 +757,7 @@ function renderActionsList() {
           ].map(([v,l]) => `<option value="${v}" ${act.type === v ? 'selected' : ''}>${l}</option>`).join('')}
         </select>
         ${paramsHtml}
-        <button class="btn-icon" onclick="removeAction(${i})" aria-label="Remove action">✕</button>
+        <button class="btn-icon" onclick="removeAction(${i})" aria-label="Remove action">${icon('x', 14)}</button>
       </div>`;
   }).join('');
 }
@@ -732,10 +789,10 @@ async function submitRuleForm(e) {
   try {
     if (editingRuleId) {
       await apiFetch(`/rules/${editingRuleId}`, { method: 'PUT', body: JSON.stringify(payload) });
-      showToast('Rule updated ✓', 'success');
+      showToast('Rule updated', 'success');
     } else {
       await apiFetch('/rules', { method: 'POST', body: JSON.stringify(payload) });
-      showToast('Rule created ✓', 'success');
+      showToast('Rule created', 'success');
     }
     closeModal('rule-modal');
     loadRules();
@@ -844,7 +901,7 @@ function bindEventListeners() {
         method: 'POST',
         body: JSON.stringify({ fullName, githubRepoId: Math.floor(Math.random() * 9000000) + 1000000 })
       });
-      showToast(`Connected ${fullName} ✓`, 'success');
+      showToast(`Connected ${fullName}`, 'success');
       input.value = '';
       closeModal('connect-repo-modal');
       loadRepos();
@@ -874,7 +931,7 @@ async function submitSimulateForm(e) {
       method: 'POST',
       body: JSON.stringify({ eventType, title, body })
     });
-    showToast(`⚡ Webhook processed! ${res.actions?.length || 0} action(s) triggered.`, 'success');
+    showToast(`Webhook processed! ${res.actions?.length || 0} action(s) triggered.`, 'success');
     closeModal('simulate-modal');
     loadOverview();
     if (state.currentTab === 'events') loadEvents(1);
@@ -882,7 +939,7 @@ async function submitSimulateForm(e) {
     showToast(`Simulation error: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = '⚡ Dispatch Webhook';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 4px;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Dispatch Webhook';
   }
 }
 

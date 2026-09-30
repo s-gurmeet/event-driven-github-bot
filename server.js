@@ -147,17 +147,39 @@ app.use((err, req, res, next) => {
 // ─── Start ────────────────────────────────────────────────────────────────────
 async function start() {
   try {
-    // Validate required environment variables
-    const required = ['DATABASE_URL', 'SESSION_SECRET', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET', 'APP_URL'];
-    const missing = required.filter(key => !process.env[key]);
-    if (missing.length) {
-      console.error(`[Server] Missing required environment variables: ${missing.join(', ')}`);
-      process.exit(1);
+    // Apply development defaults if not set
+    if (!process.env.SESSION_SECRET) {
+      process.env.SESSION_SECRET = 'gitbot_dev_secret_0123456789abcdef0123456789abcdef';
+      console.log('[Server] SESSION_SECRET not set, using default dev secret');
+    }
+    if (!process.env.APP_URL) {
+      process.env.APP_URL = `http://localhost:${PORT}`;
+      console.log(`[Server] APP_URL not set, default to ${process.env.APP_URL}`);
+    }
+    if (!process.env.DATABASE_URL) {
+      process.env.DATABASE_URL = 'postgresql://localhost:5432/github_bot';
+      console.log('[Server] DATABASE_URL not set, default to postgresql://localhost:5432/github_bot');
+    }
+
+    if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+      if (process.env.NODE_ENV === 'production') {
+        console.warn('[Server] Warning: GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET missing in production.');
+      } else {
+        console.log('[Server] Note: GITHUB_CLIENT_ID not set. Real GitHub OAuth is disabled; sandbox & demo mode are active at /auth/demo');
+      }
     }
 
     // Run database migration
-    await db.migrate();
-    console.log('[Server] Database ready');
+    try {
+      await db.migrate();
+      console.log('[Server] Database ready');
+    } catch (dbErr) {
+      console.error('[Server] Database connection failed:', dbErr.message);
+      console.error('[Server] Hint: Ensure PostgreSQL is running or set a valid DATABASE_URL in .env (e.g. free cloud PostgreSQL from https://neon.tech)');
+      if (process.env.NODE_ENV === 'production') {
+        process.exit(1);
+      }
+    }
 
     app.listen(PORT, () => {
       console.log(`[Server] GitHub Automation Bot running on port ${PORT}`);

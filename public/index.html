@@ -27,7 +27,9 @@
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
       <div class="nav-logo">
-        <span class="logo-icon" aria-hidden="true">⚡</span>
+        <span class="logo-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        </span>
         <span class="logo-text">GitBot</span>
       </div>
       <div class="nav-links">
@@ -64,7 +66,8 @@
           Connect with GitHub
         </a>
         <a href="/auth/demo" class="btn btn-demo btn-lg">
-          ⚡ Explore Live Dashboard (Demo)
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          Explore Live Dashboard
         </a>
         <a href="#pipeline" class="btn btn-ghost btn-lg">
           Try Live Sandbox ↓
@@ -75,7 +78,9 @@
       <div class="pipeline-sandbox" id="pipeline" aria-label="Interactive Bot Simulation Sandbox">
         <div class="sandbox-header">
           <div class="sandbox-title-wrap">
-            <span style="font-size: 1.4rem;">🔬</span>
+            <div style="width:38px; height:38px; border-radius:10px; background:rgba(99,102,241,0.15); border:1px solid rgba(99,102,241,0.3); display:flex; align-items:center; justify-content:center; color:#818cf8; flex-shrink:0;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="8" x="2" y="2" rx="2"/><rect width="8" height="8" x="14" y="2" rx="2"/><rect width="8" height="8" x="8" y="14" rx="2"/><path d="M6 10v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-2"/></svg>
+            </div>
             <div>
               <div class="sandbox-title">Interactive Automation Pipeline</div>
               <div class="sandbox-subtitle">Click an event to simulate live webhook ingestion, AI triage & dispatch</div>
@@ -83,13 +88,16 @@
           </div>
           <div class="trigger-buttons-group">
             <button class="btn btn-ghost btn-sm active" id="btn-sim-issue" onclick="simulateEvent('issue')">
-              🐛 Bug Issue
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/></svg>
+              Bug Issue
             </button>
             <button class="btn btn-ghost btn-sm" id="btn-sim-pr" onclick="simulateEvent('pr')">
-              🔀 Feature PR
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" x2="6" y1="9" y2="21"/></svg>
+              Feature PR
             </button>
             <button class="btn btn-ghost btn-sm" id="btn-sim-push" onclick="simulateEvent('push')">
-              🚀 Git Push
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+              Git Push
             </button>
           </div>
         </div>
@@ -98,22 +106,34 @@
         <div class="pipeline-nodes-grid">
           <div class="pipeline-node active" id="node-webhook">
             <div class="node-step-tag">Step 01 • Ingest</div>
-            <div class="node-title"><span>⚡</span> Webhook Receiver</div>
+            <div class="node-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+              Webhook Receiver
+            </div>
             <div class="node-detail" id="node-webhook-detail">HMAC Verified: 200 OK</div>
           </div>
           <div class="pipeline-node active" id="node-ai">
             <div class="node-step-tag">Step 02 • AI Intel</div>
-            <div class="node-title"><span>🤖</span> Gemini AI 1.5</div>
+            <div class="node-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+              Gemini AI 1.5
+            </div>
             <div class="node-detail" id="node-ai-detail">Priority: HIGH (Confidence: 98%)</div>
           </div>
           <div class="pipeline-node active" id="node-rules">
             <div class="node-step-tag">Step 03 • Logic</div>
-            <div class="node-title"><span>📋</span> Rules Engine</div>
+            <div class="node-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="6" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="6" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="10" y2="3"/></svg>
+              Rules Engine
+            </div>
             <div class="node-detail" id="node-rules-detail">Rule #1 Matched: 'Auto-Triage'</div>
           </div>
           <div class="pipeline-node active" id="node-dispatch">
             <div class="node-step-tag">Step 04 • Dispatch</div>
-            <div class="node-title"><span>📣</span> Multi-Target</div>
+            <div class="node-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>
+              Multi-Target
+            </div>
             <div class="node-detail" id="node-dispatch-detail">GitHub Label + Slack Alert</div>
           </div>
         </div>
@@ -168,32 +188,44 @@
 
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon-wrapper">🔐</div>
+          <div class="feature-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #818cf8;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
           <h3 class="feature-title">Secure OAuth & Secret Isolation</h3>
           <p class="feature-desc">Per-repo HMAC-SHA256 signature verification with timing-safe checks. Tokens never leave server-side memory.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon-wrapper">🤖</div>
+          <div class="feature-icon-wrapper" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #c084fc;"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+          </div>
           <h3 class="feature-title">AI Auto-Triage & Summaries</h3>
           <p class="feature-desc">Gemini analyzes issue descriptions, evaluates urgency, predicts labels, and drafts friendly triage notes automatically.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon-wrapper">⚡</div>
+          <div class="feature-icon-wrapper" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #fbbf24;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          </div>
           <h3 class="feature-title">Instant Rule Engine</h3>
           <p class="feature-desc">Visual rule creator with nested conditions: matches regex, title contains, author, or labels. Zero code required.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon-wrapper">📣</div>
+          <div class="feature-icon-wrapper" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f472b6;"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          </div>
           <h3 class="feature-title">Rich Slack Notifications</h3>
           <p class="feature-desc">Slack Block Kit cards complete with author avatars, priority status chips, markdown summaries, and direct GitHub links.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon-wrapper">📊</div>
+          <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #38bdf8;"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+          </div>
           <h3 class="feature-title">Live Audit Trail & Inspector</h3>
           <p class="feature-desc">Full transparency: view every webhook delivery ID, raw payload JSON, execution duration, and retry status.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon-wrapper">🔄</div>
+          <div class="feature-icon-wrapper" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #34d399;"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          </div>
           <h3 class="feature-title">Idempotency & Resiliency</h3>
           <p class="feature-desc">Automatic deduplication via GitHub's X-GitHub-Delivery header. Never send duplicate Slack alerts or multiple labels.</p>
         </div>
@@ -243,7 +275,8 @@
             Connect with GitHub
           </a>
           <a href="/auth/demo" class="btn btn-demo btn-xl">
-            ⚡ Open Instant Demo
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            Open Instant Demo
           </a>
         </div>
       </div>
@@ -254,7 +287,9 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="nav-logo">
-        <span class="logo-icon" style="width:26px; height:26px; font-size:0.9rem;">⚡</span>
+        <span class="logo-icon" style="width:26px; height:26px;" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        </span>
         <span style="font-size: 1rem; color: #fff;">GitBot</span>
       </div>
       <p class="footer-text">Built with Node.js, Express, PostgreSQL, Google Gemini AI & Slack Block Kit.</p>
