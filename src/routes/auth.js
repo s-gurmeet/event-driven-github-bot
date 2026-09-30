@@ -24,7 +24,6 @@ router.get('/github', (req, res) => {
 
   const params = new URLSearchParams({
     client_id: GITHUB_CLIENT_ID,
-    redirect_uri: `${APP_URL}/auth/github/callback`,
     scope: 'repo read:user user:email',
     state,
   });
@@ -61,7 +60,6 @@ router.get('/github/callback', async (req, res) => {
         client_id: GITHUB_CLIENT_ID,
         client_secret: GITHUB_CLIENT_SECRET,
         code,
-        redirect_uri: `${APP_URL}/auth/github/callback`,
       }),
     });
 
